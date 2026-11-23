@@ -1,0 +1,23 @@
+# Compila el proyecto en una Mac de GitHub en cada cambio, para comprobar
+# que el simulacro abre y compila en Xcode sin errores.
+name: Compilar
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  compilar:
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Versión de Xcode
+        run: xcodebuild -version
+      - name: Compilar para el simulador de iOS
+        run: |
+          xcodebuild build \
+            -project MisLibros.xcodeproj \
+            -scheme MisLibros \
+            -destination 'generic/platform=iOS Simulator' \
+            CODE_SIGNING_ALLOWED=NO
